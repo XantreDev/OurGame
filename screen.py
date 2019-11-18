@@ -10,9 +10,7 @@ class screen(pygame.sprite.Sprite):
     def __init__(self, size= (1600,900), black =(0,0,0)):
         pygame.sprite.Sprite.__init__(self)
         self.screen = pygame.display.set_mode(size)
-        self.image = pygame.image.load("levels/level/lvl1.png")
         self.background = pygame.image.load("levels/background/background1.png")
-        self.rect = self.image.get_rect()
         self.size=size
         self.black = black
 
