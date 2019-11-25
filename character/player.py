@@ -11,7 +11,7 @@ class character(pygame.sprite.Sprite):
         self.hp=hp
         self.ammo=ammo
         self.image = pygame.image.load('character/Bob.png')
-        self.image = pygame.transform.scale(self.image,(60,40))
+        self.image = pygame.transform.scale(self.image,(60,50))
         self.image = pygame.transform.rotate(self.image, 270)
         self.image_rotated = list()
         self.rect = self.image.get_rect()
@@ -23,10 +23,13 @@ class character(pygame.sprite.Sprite):
         self.speed = speed
         self.a=0
         self.all_rotates()
+        self.collide_x = False
+        self.collide_y = False
+        self.mouse_pos = (0,0)
 
     def all_rotates(self):
         x = pygame.image.load('character/Bob.png')
-        x = pygame.transform.scale(x,(60,40))
+        x = pygame.transform.scale(x,(60,50))
         for i in range (0,721):
             self.image_rotated.append(pygame.transform.rotate(x, i/2))
 
@@ -50,37 +53,48 @@ class character(pygame.sprite.Sprite):
             elif chr(event.key) == 's':
                 self.shift_y = 0
         if event.type == pygame.MOUSEMOTION:
-            x,y=event.pos
-            x1,y1 = self.rect.center
-            #len = ((x1**2-x**2)**0.5 + (y1**2 - y**2))**0.5
-            #if (x1-x)<=0:
-            #    if (y1-y)<=0:
-            #        math.atan()
-            angle=round(math.degrees(math.atan2(y1-y,x1-x)+3.14159265))
-            print(angle)
-            if (angle != self.a):
-                 self.image = self.image_rotated[(180-angle)*2]
-                 self.a = angle
-                 #self.rect = self.image.get_rect()
-                 #self.rect.center = (x1,y1)
-    # def collide_with_map(self, map):
-    #     if self.collide_mask(map):
-    #         self.shift_x = 0
-    #         self.shift_y = 0
+            self.mouse_pos=event.pos
+
+            # angle=(math.degrees(math.atan2(y1-y,x1-x)+math.pi))
+            # print(angle)
+            # if (round(angle*2) != round(self.a*2)):
+            #      self.image = self.image_rotated[(180-round(angle))*2]
+            #      self.a = angle
 
     def collide_with_lvl(self,lvl):
+        self.collide_x = False
+        self.collide_y = False
         for item in lvl.objects:
-            if item.colliderect(self.rect):
-                self.peeling_x = self.shift_x * -1
-                self.peeling_y = self.shift_y * -1
+            if (item.collidepoint(self.rect.midtop) or item.collidepoint(self.rect.midbottom) or item.collidepoint(self.rect.topleft) or
+            item.collidepoint(self.rect.bottomleft) or item.collidepoint(self.rect.topright) or item.collidepoint(self.rect.bottomright)):
+                self.collide_y = True
+            if (item.collidepoint(self.rect.midleft) or item.collidepoint(self.rect.midright) or item.collidepoint(self.rect.bottomleft)
+                    or item.collidepoint(self.rect.topright) or item.collidepoint(self.rect.bottomright) or item.collidepoint(self.rect.topleft)):
+                self.collide_x = True
 
     def collide(self, lvl):
         self.collide_with_lvl(lvl)
 
-    def process_logic(self):
-        self.rect.centerx +=self.shift_x + self.peeling_x
-        self.rect.centery += self.shift_y + self.peeling_y
-        self.peeling_x, self.peeling_y = 0,0
+    def process_logic(self, lvl):
+        x,y = self.rect.centerx, self.rect.centery
+        self.rect.centerx +=self.shift_x
+        self.rect.centery += self.shift_y
+        self.collide(lvl)
+        if (self.collide_x):
+            self.rect.centerx = x
+        if (self.collide_y):
+            self.rect.centery = y
+        self.rotation()
+
+    def rotation(self):
+        angle = (math.degrees(math.atan2(self.rect.centery - self.mouse_pos[1], self.rect.centerx - self.mouse_pos[0]) + math.pi))
+        print(angle)
+        if (round(angle * 2) != round(self.a * 2)):
+            self.image = self.image_rotated[(180 - round(angle)) * 2]
+            self.a = angle
+
+
+
 
     def draw(self, screen):
         screen.blit(self.image,self.rect)

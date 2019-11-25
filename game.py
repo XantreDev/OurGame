@@ -17,7 +17,7 @@ def main():
             else: P.control_logic(event)
             #k+=1
             #if (k>3): break
-        P.process_logic()
+        P.process_logic(L)
         P.collide(L)
         S.drawing(P,L)
     sys.exit()
