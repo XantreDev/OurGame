@@ -19,6 +19,7 @@ class lvl:
                 if len(str)==4: self.objects.append(pygame.Rect(int(str[0]),int(str[1]),int(str[2]), int(str[3])))
             for i in range(len(self.objects)):
                 self.color.append(colors[random.randint(0,len(colors)-1)])
+
     def draw(self, screen):
         for i in range(len(self.objects)):
             pygame.draw.rect(screen, self.color[i],self.objects[i])
