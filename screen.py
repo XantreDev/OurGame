@@ -20,8 +20,6 @@ class screen(pygame.sprite.Sprite):
         level.draw(self.screen)
         #self.screen.blit(self.image,self.image.get_rect())
         character.draw(self.screen)
-        pygame.display.flip()
-        pygame.time.wait(1)
 
     def return_screen(self):
         return self.screen

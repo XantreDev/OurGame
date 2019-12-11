@@ -11,6 +11,7 @@ class level:
         self.import_all()
         self.x1,  self.x2, self.y1, self.y2 = 0,0,0,0
         self.checker = [False, False]
+        self.field_creator()
 
     def import_all(self):
         with open('levels/level/lvl1.txt','r') as f:
@@ -53,6 +54,24 @@ class level:
                 self.objects.append(pygame.Rect(self.x1,self.y1,abs(self.x2-self.x1),abs(self.y2-self.y1)))
                 self.checker[0], self.checker[1] = False, False
             self.draw(screen)
+
+    def field_creator(self, size = (1600, 900), precision = 80): # precision - точность заполнения матрицы, то есть при значении равном size[0 либо 1 в зависимости от того куда надо подставить] будет воссоздана картинка уровня в размере
+        # size[0] - строк; size[1] - столбцов
+        # 80 - оптимальное значение на данный момент
+        with open('levels/level/lvl1' + '_field','w') as f:
+            f.write('Field {' + '\n')
+            for i in range(0,size[0],size[0]//precision):
+                buf_mas = list()
+                for j in range (0, size[1], size[1]//precision):
+                    tmp = False
+                    for item in self.objects:
+                        if (item.collidepoint(i,j)):
+                            tmp = True
+                            break
+                    if tmp: buf_mas.append(-1)
+                    else: buf_mas.append(0)
+                f.write('   '+str(buf_mas) + '\n')
+            f.write('}')
 
     def draw(self, screen):
         for i in range(len(self.objects)):

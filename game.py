@@ -20,4 +20,6 @@ def main():
             else: events_array.append(event)
         P.logic(L, events_array)
         S.drawing(P,L)
+        pygame.display.flip()
+        pygame.time.wait(10)
     sys.exit()
