@@ -4,7 +4,7 @@ import math
 class character(pygame.sprite.Sprite):
     def __init__(self, hp = 100, ammo=100, x=600, y=800, size=40, speed = 10, img= 'resources/images/character/Bob.png'):
         pygame.sprite.Sprite.__init__(self)
-        self.hp=hp
+        self.hp = hp
         self.ammo=ammo
         self.path = img
         self.image = pygame.image.load(self.path)
@@ -74,4 +74,4 @@ class character(pygame.sprite.Sprite):
         pass
 
     def draw(self, screen):
-        screen.blit(self.image,self.rect)
+        screen.blit(self.image, self.rect)

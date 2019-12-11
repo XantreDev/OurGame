@@ -21,4 +21,7 @@ class screen(pygame.sprite.Sprite):
         #self.screen.blit(self.image,self.image.get_rect())
         character.draw(self.screen)
         pygame.display.flip()
-        pygame.time.wait(12)
+        pygame.time.wait(1)
+
+    def return_screen(self):
+        return self.screen
