@@ -1,5 +1,6 @@
 import pygame
 import random
+from os.path import normcase, normpath
 
 colors = [(121,196,113),(141,207,244)]
 
@@ -14,7 +15,7 @@ class level:
         self.field_creator()
 
     def import_all(self):
-        with open('levels/level/lvl1.txt','r') as f:
+        with open(normpath('levels/level/lvl1.txt'),'r') as f:
             while f:
                 str = f.readline()
                 if str=='': break
@@ -29,7 +30,7 @@ class level:
 
     def level_creator(self,screen):
         self.name = input()
-        f = open(self.name,'w')
+        f = open(normpath(self.name),'w')
         work = True
         while work == True:
             for event in pygame.event.get():
@@ -55,11 +56,12 @@ class level:
                 self.checker[0], self.checker[1] = False, False
             self.draw(screen)
 
+
     def field_creator(self, size = (1600, 900), precision = 80): # precision - точность заполнения матрицы, то есть при значении равном size[0 либо 1 в зависимости от того куда надо подставить] будет воссоздана картинка уровня в размере
         # size[0] - строк; size[1] - столбцов
         # 80 - оптимальное значение на данный момент
-        with open('levels/level/lvl1' + '_field','w') as f:
-            f.write('Field {' + '\n')
+        with open(normpath('levels/level/lvl1' + '_field'),'w') as f:
+            f.write('Field: {' + '\n')
             for i in range(0,size[0],size[0]//precision):
                 buf_mas = list()
                 for j in range (0, size[1], size[1]//precision):
@@ -76,5 +78,3 @@ class level:
     def draw(self, screen):
         for i in range(len(self.objects)):
             pygame.draw.rect(screen, self.color[0],self.objects[i])
-        pygame.display.flip()
-        pygame.time.wait(10)

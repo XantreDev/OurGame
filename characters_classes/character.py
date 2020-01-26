@@ -1,8 +1,9 @@
 import pygame
 import math
+from os.path import normpath, normcase
 
 class character(pygame.sprite.Sprite):
-    def __init__(self, hp = 100, ammo=100, x=600, y=800, size=40, speed = 10, img= 'resources/images/character/Bob.png'):
+    def __init__(self, hp = 100, ammo=100, x=600, y=800, size=40, speed = 10, img= normpath('resources/images/character/Bob.png')):
         pygame.sprite.Sprite.__init__(self)
         self.hp = hp
         self.ammo=ammo
