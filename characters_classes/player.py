@@ -49,7 +49,7 @@ class Player(character):
         if (round(angle * 2) != round(self.a * 2)):
             self.image = self.image_rotated[(180 - round(angle)) * 2]
             self.a = angle
-        print(self.a)
+        # print(self.a)
 
     def logic(self, map, events):
         self.control_logic(events)
