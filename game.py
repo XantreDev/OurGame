@@ -3,6 +3,8 @@ import sys
 from characters_classes.player import Player
 from screen import screen
 from env_classes.level import level
+import time
+from math import floor
 
 class Worker:
     def __init__(self):
@@ -16,6 +18,7 @@ class Worker:
     
     def run(self):
         while self.work==True:
+            timing = time.time()
             events_array = list()
             for event in pygame.event.get():
                 if event.type == pygame.QUIT: self.work = False
@@ -24,15 +27,20 @@ class Worker:
                 else: events_array.append(event)
             
             for item in self.Objects:
-                item.run()
+                item.run(self.L.objects)
             
             for item in self.Characters:
                 item.logic(self.L, events_array)
             
+            self.L.draw(self.S.screen)
+            
             self.S.drawing(self.Characters, self.Objects, self.L)
+            wait = 13 - (time.time()-timing)*1000
             pygame.display.flip()
-            pygame.time.wait(10)
-            if self.timer % 20 == 0:
+            if wait>0:
+                pygame.time.wait(floor(wait))
+            
+            if self.timer % 40 == 0 or (wait < -3 and self.timer % 5 == 0):
                 print(len(self.Objects))
                 self.objects_control()
             if self.timer > 1000:

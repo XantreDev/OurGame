@@ -13,10 +13,10 @@ class lvl:
     def import_all(self):
         with open('levels/level/lvl1.txt','r') as f:
             while f:
-                str = f.readline()
-                if str=='': break
-                str = str.strip().split(' ')
-                if len(str)==4: self.objects.append(pygame.Rect(int(str[0]),int(str[1]),int(str[2]), int(str[3])))
+                string = f.readline()
+                if string=='': break
+                string = string.strip().split(' ')
+                if len(string)==4: self.objects.append(pygame.Rect(int(string[0]),int(string[1]),int(string[2]), int(string[3])))
             for i in range(len(self.objects)):
                 self.color.append(colors[random.randint(0,len(colors)-1)])
 
