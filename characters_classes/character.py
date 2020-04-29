@@ -2,6 +2,9 @@ import pygame
 import math
 from os.path import normpath, normcase
 from env_classes.weapons.auto_gun import AutomaticGun
+from env_classes.weapons.shotgun import Shotgun
+from env_classes.weapons.auto_shotgun import AutoShotgun
+
 
 class character(pygame.sprite.Sprite):
     def __init__(self, hp=100, ammo=100, x=600, y=800, size=40, speed=10, img=normpath('resources/images/character/Bob.png'), Worker=None):
@@ -23,7 +26,7 @@ class character(pygame.sprite.Sprite):
         self.collide_x = False
         self.collide_y = False
         self.worker = Worker
-        self.weapon = AutomaticGun(Worker=self.worker, Character=self)
+        self.weapon = AutoShotgun(Worker=self.worker, Character=self)
 
     def control_logic(self):
         pass

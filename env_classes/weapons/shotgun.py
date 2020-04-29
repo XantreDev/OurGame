@@ -1,12 +1,12 @@
 from env_classes.weapons.weapon import Weapon
+from env_classes.weapons.auto_shotgun import AutoShotgun
 from object_classes.bullet import bullet
+from tools.utils import degree_editor
 
-class Shotgun(Weapon):
+class Shotgun(AutoShotgun):
     def __init__(self, speeding = 20, scatter = 30, scatter_frequency = 1, Worker=None, Character=None):
-        super().__init__(speeding=speeding, Worker=Worker, Character=Character)
+        super().__init__(speeding=speeding, scatter=scatter, scatter_frequency=scatter_frequency, Worker=Worker, Character=Character)
     
     def run(self):
-        if self.status and self.timer % self.speeding == 0:
-            self.worker.object_adder(bullet((self.character.rect.centerx, self.character.rect.centery), self.character.a))
+        super().run()
         self.deactivate()
-        self.timer += 1
