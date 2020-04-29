@@ -14,12 +14,16 @@ class screen(pygame.sprite.Sprite):
         self.size=size
         self.black = black
 
-    def drawing(self, character, level):
+    def drawing(self, characters, objects, level):
         self.screen.fill(self.black)
         self.screen.blit(self.background, self.background.get_rect())
         level.draw(self.screen)
         #self.screen.blit(self.image,self.image.get_rect())
-        character.draw(self.screen)
+        for character in characters:
+            character.draw(self.screen)
+        
+        for item in objects:
+            item.draw(self.screen)
 
     def return_screen(self):
         return self.screen

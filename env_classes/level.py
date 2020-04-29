@@ -60,8 +60,8 @@ class level:
     def field_creator(self, size = (1600, 900), precision = 80): # precision - точность заполнения матрицы, то есть при значении равном size[0 либо 1 в зависимости от того куда надо подставить] будет воссоздана картинка уровня в размере
         # size[0] - строк; size[1] - столбцов
         # 80 - оптимальное значение на данный момент
-        with open(normpath('levels/level/lvl1' + '_field'),'w') as f:
-            f.write('Field: {' + '\n')
+        with open(normpath('levels/level/lvl1' + '_field.py'),'w') as f:
+            f.write('Field = [' + '\n')
             for i in range(0,size[0],size[0]//precision):
                 buf_mas = list()
                 for j in range (0, size[1], size[1]//precision):
@@ -72,8 +72,8 @@ class level:
                             break
                     if tmp: buf_mas.append(-1)
                     else: buf_mas.append(0)
-                f.write('   '+str(buf_mas) + '\n')
-            f.write('}')
+                f.write('   '+str(buf_mas) + ',\n')
+            f.write(']')
 
     def draw(self, screen):
         for i in range(len(self.objects)):
