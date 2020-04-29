@@ -38,7 +38,9 @@ class Player(character):
             if event.type == pygame.MOUSEMOTION:
                 self.mouse_pos = event.pos
             if event.type == pygame.MOUSEBUTTONDOWN:
-                self.worker.object_adder(bullet((self.rect.centerx, self.rect.centery), self.a))
+                self.weapon.activate()
+            elif event.type == pygame.MOUSEBUTTONUP:
+                self.weapon.deactivate()
 
     def angle(self):
         return (math.degrees(
@@ -54,6 +56,7 @@ class Player(character):
     def logic(self, map, events):
         self.control_logic(events)
         self.process_logic(map)
+        self.weapon.run()
 
     def draw(self, screen):
         screen.blit(self.image, self.rect)

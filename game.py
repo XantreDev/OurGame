@@ -12,6 +12,7 @@ class Worker:
         self.Objects = []
         self.Characters = [Player(Worker=self)]
         self.L = level()
+        self.timer = 0
     
     def run(self):
         while self.work==True:
@@ -31,7 +32,22 @@ class Worker:
             self.S.drawing(self.Characters, self.Objects, self.L)
             pygame.display.flip()
             pygame.time.wait(10)
+            if self.timer % 20 == 0:
+                print(len(self.Objects))
+                self.objects_control()
+            if self.timer > 1000:
+                self.timer = 0
+            self.timer+=1
         sys.exit()
+    
+    def objects_control(self):
+        i = int(0)
+        while i < len(self.Objects):
+            if self.Objects[i].off_frame:
+                del self.Objects[i]
+            else: 
+                i+=1
+                
     
     def object_adder(self, _object):
         self.Objects.append(_object)
