@@ -7,7 +7,7 @@ from tools.vector import Vector
 from tools.route import Route
 
 class bullet():
-    def __init__(self, cord=(0, 0), rotation=100, speed=20, durability = 4):
+    def __init__(self, cord=(0, 0), rotation=100, speed=20, durability = 100):
         # print(cord)
         self.rect = pygame.Rect((cord[0], cord[1]), (3, 3))
         self.rot_to_speed(rotation, speed)
@@ -27,17 +27,20 @@ class bullet():
         self.shift_y = -1 * speed * sin(rad)
 
     def run(self, level_objects):
-        self.route.update((self.rect.centerx, self.rect.centery), (self.rect.centerx + self.shift_x, self.rect.centery + self.shift_y))       
+        self.route.update((self.rect.centerx, self.rect.centery), 
+                          (self.rect.centerx + self.shift_x, 
+                           self.rect.centery + self.shift_y))       
         self.rect.centerx += self.shift_x
         self.rect.centery += self.shift_y
         
-        self.fast_collide(level_objects)
+        self.collide(level_objects)
 
         self.timer += 1
         if self.timer > 2: self.liveability_check()
 
     def long_collide(self, obj):
-        col_pos, k1, k2, d1, d2 = self.route.collide(self.rect, obj, Vector(self.shift_x * 2 / self.speed, self.shift_y * 2 / self.speed))
+        col_pos, k1, k2, d1, d2 = self.route.collide(self.rect, obj, Vector(self.shift_x, 
+                                                                            self.shift_y))
         
         self.shift_x *= k1
         self.shift_y *= k2
@@ -48,14 +51,25 @@ class bullet():
         self.rect.centery += self.shift_y - d2
         
 
-    def fast_collide(self, objects):
+    def collide(self, objects):
         for obj in objects:
             if obj.colliderect(self.rect):
                 self.long_collide(obj)
                 self.collide_count += 1
 
+    # def fast_collide(self, objects):
+    #     for obj in objects:
+    #         if (obj.collidepoint(self.rect.midtop) or obj.collidepoint(self.rect.midbottom) or obj.collidepoint(self.rect.topleft) or
+    #             obj.collidepoint(self.rect.bottomleft) or obj.collidepoint(self.rect.topright) or obj.collidepoint(self.rect.bottomright)):
+    #             self.shift_y *= -1
+    #             self.collide_count += 1
+    #         if (obj.collidepoint(self.rect.midleft) or obj.collidepoint(self.rect.midright) or obj.collidepoint(self.rect.bottomleft)
+    #             or obj.collidepoint(self.rect.topright) or obj.collidepoint(self.rect.bottomright) or obj.collidepoint(self.rect.topleft)):
+    #             self.shift_x *= -1
+    #             self.collide_count += 1
+
     def liveability_check(self):
-        if self.durability <= self.collide_count:
+        if self.collide_count > self.durability:
             self.off_frame = True
 
 

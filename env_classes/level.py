@@ -1,6 +1,7 @@
-import pygame
 import random
 from os.path import normcase, normpath
+
+import pygame
 
 colors = [(121, 196, 113), (141, 207, 244)]
 
@@ -15,7 +16,10 @@ class level:
         self.checker = [False, False]
         self.field_creator()
 
-    def import_all(self):
+    def import_all(self) -> None:
+        """
+        Level objects import from file
+        """
         with open(normpath('levels/level/lvl1.txt'), 'r') as f:
             while f:
                 string = f.readline()
@@ -33,7 +37,14 @@ class level:
             file.write(str(item.x) + ' ' + str(item.y) + ' ' +
                        str(item.h) + ' ' + str(item.w) + '\n')
 
-    def level_creator(self, screen):
+    def level_creator(self, screen: pygame.Surface) -> None:
+        """        
+        Level Creator tool.
+        
+        Crates and write level in file.
+        
+        Screen - surface object.
+        """
         self.name = input()
         f = open(normpath(self.name), 'w')
         work = True
@@ -63,7 +74,10 @@ class level:
             self.draw(screen)
     
     # precision - точность заполнения матрицы, то есть при значении равном size[0 либо 1 в зависимости от того куда надо подставить] будет воссоздана картинка уровня в размере
-    def field_creator(self, size=(1600, 900), precision=80):
+    def field_creator(self, size=(1600, 900), precision=80) -> None:
+        """
+        Creates two-dimensional array of level.
+        """
         # size[0] - строк; size[1] - столбцов
         # 80 - оптимальное значение на данный момент
         with open(normpath('levels/level/lvl1' + '_field.py'), 'w') as f:

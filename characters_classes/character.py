@@ -1,9 +1,7 @@
 import pygame
 import math
 from os.path import normpath, normcase
-from env_classes.weapons.auto_gun import AutomaticGun
-from env_classes.weapons.shotgun import Shotgun
-from env_classes.weapons.auto_shotgun import AutoShotgun
+from env_classes.weapons import AutoShotgun
 
 
 class character(pygame.sprite.Sprite):
