@@ -2,11 +2,12 @@ import pygame
 import math
 from os.path import normpath, normcase
 from env_classes.weapons import AutoShotgun
+from characters_classes.deafult_object import GameObject
+from tools.utils import side_collide
 
-
-class character(pygame.sprite.Sprite):
+class character(GameObject):
     def __init__(self, hp=100, ammo=100, x=600, y=800, size=40, speed=10, img=normpath('resources/images/character/Bob.png'), Worker=None):
-        pygame.sprite.Sprite.__init__(self)
+        # pygame.sprite.Sprite.__init__(self)
         self.hp = hp
         self.ammo = ammo
         self.path = img
@@ -14,7 +15,8 @@ class character(pygame.sprite.Sprite):
         self.image = pygame.transform.scale(self.image, (60, 50))
         self.image = pygame.transform.rotate(self.image, 270)
         self.image_rotated = list()
-        self.rect = self.image.get_rect()
+        rect = self.image.get_rect()
+        super().__init__(rect)
         self.rect.center = (400, 800)
         self.shift_x = 0
         self.shift_y = 0
@@ -59,11 +61,9 @@ class character(pygame.sprite.Sprite):
         self.collide_x = False
         self.collide_y = False
         for item in lvl.objects:
-            if (item.collidepoint(self.rect.midtop) or item.collidepoint(self.rect.midbottom) or item.collidepoint(self.rect.topleft) or
-                    item.collidepoint(self.rect.bottomleft) or item.collidepoint(self.rect.topright) or item.collidepoint(self.rect.bottomright)):
+            if side_collide(item, self.top_side()) or side_collide(item, self.bottom_side()):
                 self.collide_y = True
-            if (item.collidepoint(self.rect.midleft) or item.collidepoint(self.rect.midright) or item.collidepoint(self.rect.bottomleft)
-                    or item.collidepoint(self.rect.topright) or item.collidepoint(self.rect.bottomright) or item.collidepoint(self.rect.topleft)):
+            if side_collide(item, self.left_side()) or side_collide(item, self.right_side()):
                 self.collide_x = True
 
     def logic(self, map, events=None):

@@ -1,76 +1,63 @@
 import pygame
+
 from tools.vector import Vector
+from characters_classes.deafult_object import GameObject
+from tools.utils import side_collide
+
 
 class Route:
     def __init__(self):
         self.pos1 = (0, 0)
         self.pos2 = (0, 0)
-    
+
     def update(self, pos1, pos2):
         self.pos1 = pos1
         self.pos2 = pos2
-    
-    def side_collide(self, obj, points):
-        c = 0
-        for point in points:
-            c += int(obj.collidepoint(point))
-        return (c>=2)
-            
-    def collide(self, rect, obj, vector): # TODO: refactor
-        abs_shift_x = abs(vector.x)
-        abs_shift_y = abs(vector.x)
+
+    def instant_vector(self, vector):
+        abs_shift_x = vector.abs_x()
+        abs_shift_y = vector.abs_y()
         
-        if abs_shift_x >= abs_shift_y:
-            vector.y /=abs_shift_x
-            vector.x /=abs_shift_y
-        else:
-            vector.x /=abs_shift_y
-            vector.y /= abs_shift_y
-        
-        print(vector.x, vector.y)
-        
-        S = abs_shift_x + abs_shift_y
+        if abs_shift_x == 0 or abs_shift_y == 0:
+            if abs_shift_x == 0:
+                return Vector(0, 1)
+            return Vector(1, 0)
                 
+        if abs_shift_x >= abs_shift_y:
+            return Vector(vector.x / abs_shift_x, vector.y / abs_shift_x)
+        else:
+            return Vector(vector.x / abs_shift_y, vector.y / abs_shift_y)
+
+    def collide(self, rect, obj, vector):  # TODO: refactor        
+        inst_vector = self.instant_vector(vector)
+
+        S = vector.abs_x() + vector.abs_y()
+
         rect = pygame.Rect(rect)
         rect.center = [*self.pos1]
         point = [*self.pos1]
         covered_distance = [0, 0]
-        
-        while not obj.colliderect(rect) and S>0:
-            S -= abs(vector.x) + abs(vector.y)
-            point[0] += vector.x
-            point[1] += vector.y
-            covered_distance[0] += vector.x
-            covered_distance[1] += vector.y
+
+        while not obj.colliderect(rect) and S > 0:
+            S -= inst_vector.abs_x() + inst_vector.abs_y()
+            point[0] += inst_vector.x
+            point[1] += inst_vector.y
+            covered_distance[0] += inst_vector.x
+            covered_distance[1] += inst_vector.y
             rect.center = [*point]
         
-        left_side = [
-            rect.topleft,
-            rect.midleft,
-            rect.bottomleft
-        ]
-        right_side = [
-            rect.topright,
-            rect.midright,
-            rect.bottomright
-        ]
-        bottom_side = [
-            rect.bottomleft,
-            rect.midbottom,
-            rect.bottomright
-        ]
-        top_side = [
-            rect.topright,
-            rect.midtop,
-            rect.topleft
-        ]
+        game_object = GameObject(rect)
         
-        if self.side_collide(obj, left_side) or self.side_collide(obj, right_side):
-            corrector = [-1, 1]
-        elif self.side_collide(obj, bottom_side) or self.side_collide(obj, top_side):
-            corrector = [1, -1]
-        else:
-            corrector = [1, 1]
+        corrector = self.corrector_execute(game_object, obj)
+        
         point = (rect.centerx, rect.centery)
-        
+
         return point, *corrector, *covered_distance
+    
+    def corrector_execute(self, game_object, obj):
+        if side_collide(obj, game_object.left_side()) or side_collide(obj, game_object.right_side()):
+            return [-1, 1]
+        elif side_collide(obj, game_object.bottom_side()) or side_collide(obj, game_object.top_side()):
+            return [1, -1]
+        else:
+            return [-1, -1]

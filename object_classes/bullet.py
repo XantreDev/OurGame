@@ -5,11 +5,12 @@ import pygame
 from pygame.sprite import collide_rect
 from tools.vector import Vector
 from tools.route import Route
+from characters_classes.deafult_object import GameObject
 
-class bullet():
+class bullet(GameObject):
     def __init__(self, cord=(0, 0), rotation=100, speed=20, durability = 100):
         # print(cord)
-        self.rect = pygame.Rect((cord[0], cord[1]), (3, 3))
+        super().__init__(pygame.Rect((cord[0], cord[1]), (3, 3)))
         self.rot_to_speed(rotation, speed)
         self.speed = speed
         self.off_frame = False
@@ -56,17 +57,6 @@ class bullet():
             if obj.colliderect(self.rect):
                 self.long_collide(obj)
                 self.collide_count += 1
-
-    # def fast_collide(self, objects):
-    #     for obj in objects:
-    #         if (obj.collidepoint(self.rect.midtop) or obj.collidepoint(self.rect.midbottom) or obj.collidepoint(self.rect.topleft) or
-    #             obj.collidepoint(self.rect.bottomleft) or obj.collidepoint(self.rect.topright) or obj.collidepoint(self.rect.bottomright)):
-    #             self.shift_y *= -1
-    #             self.collide_count += 1
-    #         if (obj.collidepoint(self.rect.midleft) or obj.collidepoint(self.rect.midright) or obj.collidepoint(self.rect.bottomleft)
-    #             or obj.collidepoint(self.rect.topright) or obj.collidepoint(self.rect.bottomright) or obj.collidepoint(self.rect.topleft)):
-    #             self.shift_x *= -1
-    #             self.collide_count += 1
 
     def liveability_check(self):
         if self.collide_count > self.durability:
