@@ -1,10 +1,14 @@
-import pygame
 import sys
-from characters_classes.player import Player
-from screen import screen
-from env_classes.level import level
 import time
 from math import floor
+
+import pygame
+
+from characters_classes.enemy import Enemy
+from characters_classes.player import Player
+from env_classes.level import level
+from screen import screen
+
 
 class Worker:
     def __init__(self):
@@ -13,11 +17,14 @@ class Worker:
         self.S = screen()
         self.Objects = []
         self.Characters = [Player(Worker=self)]
+        self.enemy = Enemy(Worker=self)
         self.L = level()
         self.timer = 0
     
     def run(self):
+        for_fps = pygame.time.Clock()
         while self.work==True:
+            for_fps.tick()
             timing = time.time()
             events_array = list()
             for event in pygame.event.get():
@@ -32,13 +39,19 @@ class Worker:
             for item in self.Characters:
                 item.logic(self.L, events_array)
             
+            self.enemy.run(self.Characters[0])
+            
             self.L.draw(self.S.screen)
             
             self.S.drawing(self.Characters, self.Objects, self.L)
+            
+            self.enemy.draw(self.S.screen)
             wait = 13 - (time.time()-timing)*1000
             pygame.display.flip()
             if wait>0:
                 pygame.time.wait(floor(wait))
+            
+            print(for_fps.get_fps())
             
             if self.timer % 40 == 0 or (wait < -3 and self.timer % 5 == 0):
                 print(len(self.Objects))
@@ -62,4 +75,3 @@ class Worker:
 
 def main():
     Worker().run()
-    

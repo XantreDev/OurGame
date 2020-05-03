@@ -1,12 +1,15 @@
 import pygame
 import math
 from os.path import normpath, normcase
-from env_classes.weapons import AutoShotgun
+from env_classes.weapons import AutoShotgun, AutomaticGun
 from characters_classes.deafult_object import GameObject
 from tools.utils import side_collide
 
+
 class character(GameObject):
-    def __init__(self, hp=100, ammo=100, x=600, y=800, size=40, speed=10, img=normpath('resources/images/character/Bob.png'), Worker=None):
+    def __init__(self, hp=100, ammo=100, x=600, y=800, size=40, speed=10, 
+                 img=normpath('resources/images/character/Bob.png'), Worker=None,
+                 weapon = AutomaticGun):
         # pygame.sprite.Sprite.__init__(self)
         self.hp = hp
         self.ammo = ammo
@@ -26,7 +29,7 @@ class character(GameObject):
         self.collide_x = False
         self.collide_y = False
         self.worker = Worker
-        self.weapon = AutoShotgun(Worker=self.worker, Character=self)
+        self.weapon = weapon(Worker=self.worker, Character=self)
 
     def control_logic(self):
         pass
