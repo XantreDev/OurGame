@@ -9,17 +9,17 @@ from object_classes.blood import Blood
 
 
 class Enemy(character):
-    def __init__(self, img=normpath('resources/images/character/Bob.png'), coordinates=(0, 0), weapon=SemiautomaticGun, Worker=None):
+    def __init__(self, img=normpath('resources/images/character/Bob.png'), coordinates=(0, 0), player = None, weapon=SemiautomaticGun, Worker=None):
         super().__init__(img=img, weapon=weapon, Worker=Worker)
         self.rect.center = coordinates
+        self.player = player
 
-    def run(self, player, objects):
-        # print(player.rect.center)
-        if not Route(self.rect.center, player.rect.center).roadblocks(objects):
+    def run(self, objects):
+        if not Route(self.rect.center, self.player.rect.center).roadblocks(objects):
             self.weapon.activate()
         else:
             path = pathfinder((self.rect.centerx // settings.precision, self.rect.centery // settings.precision),
-                              (player.rect.centerx // settings.precision, player.rect.centery // settings.precision))
+                              (self.player.rect.centerx // settings.precision, self.player.rect.centery // settings.precision))
             # print(path)
             if len(path) > 1:
                 x, y = path[1]
@@ -29,7 +29,7 @@ class Enemy(character):
 
         
         self.worker.add_object(Blood(self.rect.center, Worker=self.worker))
-        self.rotate_to_player(player)
+        self.rotate_to_player(self.player)
 
         self.weapon.run()
 

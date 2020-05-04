@@ -1,9 +1,9 @@
 import pygame
+from pygame.sprite import collide_rect
 
-from tools.vector import Vector
-from characters_classes.deafult_object import GameObject
-from tools.utils import Point, side_collide
 import settings
+from characters_classes.deafult_object import GameObject
+from tools.utils import Point, Vector, route_to_vector, side_collide
 
 
 class Route:
@@ -55,6 +55,24 @@ class Route:
 
         return point, *corrector, *covered_distance
     
+    def collide_with_characters(self, rect, characters, creator):
+        vector = route_to_vector(self)
+        S = vector.abs_x() + vector.abs_y()
+        vector = self.instant_vector(vector)
+
+        point = [*self.pos1]
+        rect = pygame.Rect(rect)
+        
+        while S > 0:
+            S -= vector.abs_x() + vector.abs_y()
+            point[0] += vector.x
+            point[1] += vector.y
+            rect.center = [*point]
+            for character in characters:
+                if character is not creator and character.rect.colliderect(rect):
+                    character.hit()
+        
+    
     def corrector_execute(self, game_object, obj):
         if side_collide(obj, game_object.left_side()) or side_collide(obj, game_object.right_side()):
             return [-1, 1]
@@ -68,7 +86,7 @@ class Route:
         return abs(self.pos1[0] - self.pos2[0]) + abs(self.pos1[1] - self.pos2[1])
     
     def roadblocks(self, objects):
-        vector = self.instant_vector(Vector(self.pos2[0] - self.pos1[0], self.pos2[1] - self.pos1[1]))
+        vector = self.instant_vector(route_to_vector(self))
         vector.y *= (settings.precision // 3)
         vector.x *= (settings.precision // 3)
         point = Point(self.pos1[0], self.pos1[1])
@@ -81,6 +99,3 @@ class Route:
             # print(point.as_tuple())
             S -= vector.abs_x() + vector.abs_y()
         return False
-          
-            
-        

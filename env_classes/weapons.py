@@ -6,12 +6,14 @@ class Weapon:
     """
     Weapon chasis
     """
-    def __init__(self, speeding=20, Worker=None, Character=None):
+
+    def __init__(self, speeding=20, Worker=None, Character=None, speed=20):
         self.worker = Worker
         self.character = Character
         self.speeding = speeding
         self.status = False
         self.timer = 0
+        self.speed = speed
 
     def activate(self):
         """
@@ -31,16 +33,25 @@ class Weapon:
         """
         self.status = False
 
+    def bullet_composs(self, angle):
+        return Bullet(self.character.rect.center,
+                      angle,
+                      self.speed,
+                      creator=self.character)
+
+    def bullet_create(self, angle):
+        self.worker.add_object(self.bullet_composs(angle))
+
 
 class AutoShotgun(Weapon):
     """
     Automatic shotgun class
     """
+
     def __init__(self, speeding=2, scatter=20, scatter_frequency=1, Worker=None, Character=None, speed=20):
-        super().__init__(speeding=speeding, Worker=Worker, Character=Character)
+        super().__init__(speeding=speeding, Worker=Worker, Character=Character, speed=speed)
         self.scatter_frequency = scatter_frequency
         self.scatter = scatter
-        self.speed = speed
 
     def activate(self):
         """
@@ -56,10 +67,8 @@ class AutoShotgun(Weapon):
         if self.status and self.timer % self.speeding == 0:
             for i in range(-self.scatter, self.scatter, self.scatter_frequency):
                 angle = degree_editor(self.character.a + i)
-                self.worker.add_object(Bullet(
-                    (self.character.rect.centerx, self.character.rect.centery), angle, speed=self.speed))
-            self.worker.add_object(Bullet(
-                (self.character.rect.centerx, self.character.rect.centery), self.character.a, speed=self.speed))
+                self.bullet_create(angle)
+            self.bullet_create(self.character.a)
         self.timer += 1
 
 
@@ -85,8 +94,7 @@ class SemiautomaticGun(Weapon):
         Process of weapon
         """
         if self.status and self.timer % self.speeding == 0:
-            self.worker.add_object(Bullet(
-                (self.character.rect.centerx, self.character.rect.centery), self.character.a))
+            self.bullet_create(self.character.a)
         self.deactivate()
         self.timer += 1
 
@@ -112,6 +120,5 @@ class AutomaticGun(Weapon):
             angle = self.character.a
             angle += (self.timer % self.scatter) - self.scatter_formule
             angle = degree_editor(angle)
-            self.worker.add_object(
-                Bullet((self.character.rect.centerx, self.character.rect.centery), angle))
+            self.bullet_create(angle)
         self.timer += 1

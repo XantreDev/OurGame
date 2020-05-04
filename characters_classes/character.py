@@ -48,6 +48,12 @@ class character(GameObject):
             self.shift_y = tmp * k_y
             self.shift_x = tmp * k_x
 
+    def death(self):
+        pass
+    
+    def hit(self):
+        pass
+
     def process_logic(self, lvl):
         self.speed_correction()
         x, y = self.rect.centerx, self.rect.centery

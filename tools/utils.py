@@ -22,3 +22,16 @@ class Point:
     
     def as_tuple(self):
         return (self.x, self.y)
+
+class Vector(Point):
+    def __init__(self, x, y):
+        super().__init__(x, y)
+    
+    def abs_x(self):
+        return abs(self.x)
+
+    def abs_y(self):
+        return abs(self.y)
+
+def route_to_vector(route):
+    return Vector(route.pos2[0] - route.pos1[0], route.pos2[1] - route.pos1[1])

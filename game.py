@@ -16,8 +16,8 @@ class Worker:
         self.work = True
         self.S = screen()
         self.Objects = []
-        self.Characters = [Player(Worker=self)]
-        self.enemy = Enemy(Worker=self)
+        self.characters = [Player(Worker=self)]
+        self.characters.append(Enemy(player=self.characters[0], Worker=self))
         self.L = level()
         self.timer = 0
 
@@ -36,18 +36,18 @@ class Worker:
                     events_array.append(event)
 
             for item in self.Objects:
+                item.run(self.L.objects, self.characters)
+            
+            self.characters[0].logic(self.L, events_array)
+            
+            for i in range(1, len(self.characters)):
+                item = self.characters[i]
                 item.run(self.L.objects)
-
-            for item in self.Characters:
-                item.logic(self.L, events_array)
-
-            self.enemy.run(self.Characters[0], self.L.objects)
 
             self.L.draw(self.S.screen)
 
-            self.S.drawing(self.Characters, self.Objects, self.L)
+            self.S.drawing(self.characters, self.Objects, self.L)
 
-            self.enemy.draw(self.S.screen)
             wait = 16 - (time.time()-timing)*1000
             pygame.display.flip()
             if wait > 0:
