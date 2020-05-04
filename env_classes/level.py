@@ -41,9 +41,9 @@ class level:
     def level_creator(self, screen: pygame.Surface) -> None:
         """        
         Level Creator tool.
-        
+
         Crates and write level in file.
-        
+
         Screen - surface object.
         """
         self.name = input()
@@ -73,7 +73,7 @@ class level:
                     self.x2-self.x1), abs(self.y2-self.y1)))
                 self.checker[0], self.checker[1] = False, False
             self.draw(screen)
-    
+
     # precision - точность заполнения матрицы, то есть при значении равном size[0 либо 1 в зависимости от того куда надо подставить] будет воссоздана картинка уровня в размере
     def field_creator(self, size=(1600, 900)) -> None:
         """

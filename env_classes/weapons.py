@@ -1,4 +1,4 @@
-from object_classes.bullet import bullet
+from object_classes.bullet import Bullet
 from tools.utils import degree_editor
 
 
@@ -56,9 +56,9 @@ class AutoShotgun(Weapon):
         if self.status and self.timer % self.speeding == 0:
             for i in range(-self.scatter, self.scatter, self.scatter_frequency):
                 angle = degree_editor(self.character.a + i)
-                self.worker.object_adder(bullet(
+                self.worker.add_object(Bullet(
                     (self.character.rect.centerx, self.character.rect.centery), angle, speed=self.speed))
-            self.worker.object_adder(bullet(
+            self.worker.add_object(Bullet(
                 (self.character.rect.centerx, self.character.rect.centery), self.character.a, speed=self.speed))
         self.timer += 1
 
@@ -85,7 +85,7 @@ class SemiautomaticGun(Weapon):
         Process of weapon
         """
         if self.status and self.timer % self.speeding == 0:
-            self.worker.object_adder(bullet(
+            self.worker.add_object(Bullet(
                 (self.character.rect.centerx, self.character.rect.centery), self.character.a))
         self.deactivate()
         self.timer += 1
@@ -112,6 +112,6 @@ class AutomaticGun(Weapon):
             angle = self.character.a
             angle += (self.timer % self.scatter) - self.scatter_formule
             angle = degree_editor(angle)
-            self.worker.object_adder(
-                bullet((self.character.rect.centerx, self.character.rect.centery), angle))
+            self.worker.add_object(
+                Bullet((self.character.rect.centerx, self.character.rect.centery), angle))
         self.timer += 1

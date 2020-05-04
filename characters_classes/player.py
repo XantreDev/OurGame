@@ -1,7 +1,7 @@
 import pygame
 import math
 from characters_classes.character import character
-from object_classes.bullet import bullet
+from object_classes.bullet import Bullet
 
 
 color = (73, 24, 19)
