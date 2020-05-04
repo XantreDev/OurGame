@@ -8,6 +8,7 @@ from characters_classes.enemy import Enemy
 from characters_classes.player import Player
 from env_classes.level import level
 from screen import screen
+from tools.utils import spawn_generator
 
 
 class Worker:
@@ -37,9 +38,9 @@ class Worker:
 
             for item in self.Objects:
                 item.run(self.L.objects, self.characters)
-            
+
             self.characters[0].logic(self.L, events_array)
-            
+
             for i in range(1, len(self.characters)):
                 item = self.characters[i]
                 item.run(self.L.objects)
@@ -58,10 +59,35 @@ class Worker:
             if self.timer % 80 == 0:
                 print(len(self.Objects))
                 self.objects_control()
+                self.add_char(Enemy(cord=spawn_generator(),
+                                    player=self.characters[0], Worker=self))
             if self.timer > 1000:
                 self.timer = 0
             self.timer += 1
         sys.exit()
+
+    def delete_char(self, char):
+        i = 0
+        while i < len(self.characters):
+            if self.characters[i] is char:
+                del self.characters[i]
+                return
+            else:
+                i += 1
+
+        # self.delete_char.append(char)
+
+    # def character_control(self):
+    #     while self.delete_char:
+    #         i = 0
+    #         len_ = len(self.characters)
+    #         while i < len_:
+    #             if self.characters[i] is self.delete_char[0]:
+    #                 del self.characters[i]
+    #                 del self.delete_char[0]
+    #                 len_-=1
+    #                 if not self.delete_char: return
+    #             i+=1
 
     def objects_control(self):
         i = int(0)
@@ -70,6 +96,9 @@ class Worker:
                 del self.Objects[i]
             else:
                 i += 1
+
+    def add_char(self, char):
+        self.characters.append(char)
 
     def add_object(self, _object):
         self.Objects.append(_object)

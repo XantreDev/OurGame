@@ -8,9 +8,9 @@ from tools.route import Route
 
 
 class Enemy(character):
-    def __init__(self, img=normpath('resources/images/character/Bob.png'), coordinates=(0, 0), player = None, weapon=SemiautomaticGun, Worker=None):
+    def __init__(self, img=normpath('resources/images/character/Bob.png'), cord=(0, 0), player = None, weapon=SemiautomaticGun, Worker=None):
         super().__init__(img=img, weapon=weapon, Worker=Worker)
-        self.rect.center = coordinates
+        self.rect.center = cord
         self.player = player
         self.timer = 0
 
@@ -18,21 +18,23 @@ class Enemy(character):
         if not Route(self.rect.center, self.player.rect.center).roadblocks(objects):
             self.weapon.activate()
         else:
-            path = pathfinder((self.rect.centery // settings.precision, self.rect.centerx // settings.precision),
-                              (self.player.rect.centery // settings.precision, self.player.rect.centerx // settings.precision))
-            # print(path)
-            if len(path) > 1:
-                y, x = path[1]
-            else:
-                y, x = path[0]
-            self.rect.center = (x*settings.precision, y*settings.precision)
+            if not(self.timer % 3):
+                path = pathfinder((self.rect.centery // settings.precision, self.rect.centerx // settings.precision),
+                                (self.player.rect.centery // settings.precision, self.player.rect.centerx // settings.precision))
+                # print(path)
+                if len(path) > 1:
+                    y, x = path[1]
+                else:
+                    y, x = path[0]
+                self.rect.center = (x*settings.precision, y*settings.precision)
+            
+            self.timer+=1
 
         self.rotate_to_player(self.player)
 
         self.weapon.run()
         self.hp_indicator.update()
 
-        self.timer+=1
         
 
     def rotate_to_player(self, player):

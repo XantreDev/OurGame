@@ -52,7 +52,7 @@ class character(GameObject):
             self.shift_x = tmp * k_x
 
     def death(self):
-        pass
+        self.worker.delete_char(self)
     
     def hp_modifier(self, dhp):
         self.hp += dhp if self.hp + dhp >= 0 else 0

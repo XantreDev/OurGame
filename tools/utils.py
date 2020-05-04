@@ -1,3 +1,7 @@
+from levels.level.lvl1_field import Field
+from random import randrange
+import settings
+
 def degree_editor(angle):
     if angle < 0:
         return (360 - angle)
@@ -10,6 +14,18 @@ def side_collide(obj, points):
         for point in points:
             c += int(obj.collidepoint(point))
         return (c >= 2)
+
+def spawn_generator():
+    i = randrange(1, len(Field)-2)
+    j = randrange(1, len(Field[0])-2)
+    
+    print(i, j)
+    
+    while Field[i][j] == -1:
+        i = randrange(1, len(Field)-2)
+        j = randrange(1, len(Field[0])-2)
+    
+    return (j * settings.precision, i * settings.precision)
 
 class Point:
     def __init__(self, x, y):
