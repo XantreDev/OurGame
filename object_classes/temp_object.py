@@ -7,9 +7,11 @@ class TemporaryObject(GameObject):
         self.worker = Worker
         self.color = color
         self.off_frame = False
+        self.timer = 0
     
     def run(self, *args):
-        pass
+        self.timer += 1
+
     
     def draw(self, screen):
         pygame.draw.rect(screen, self.color, self.rect)

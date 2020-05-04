@@ -20,7 +20,6 @@ class Bullet(TemporaryObject):
         self.rot_to_speed(rotation, speed)
         self.speed = speed
         self.off_frame = False
-        self.timer = 0
         self.route = Route()
         self.durability = durability
         self.creator = creator
@@ -35,6 +34,7 @@ class Bullet(TemporaryObject):
         self.shift_y = -1 * speed * sin(rad)
 
     def run(self, level_objects, characters):
+        super().run()
         self.route.update((self.rect.centerx, self.rect.centery),
                           (self.rect.centerx + self.shift_x,
                            self.rect.centery + self.shift_y))
@@ -43,7 +43,6 @@ class Bullet(TemporaryObject):
 
         self.collide(level_objects, characters)
 
-        self.timer += 1
         if self.timer > 2:
             self.liveability_check()
 

@@ -5,7 +5,6 @@ from tools.path_finder import pathfinder
 import math as math
 import settings
 from tools.route import Route
-from object_classes.blood import Blood
 
 
 class Enemy(character):
@@ -27,8 +26,6 @@ class Enemy(character):
                 x, y = path[0]
             self.rect.center = (x*settings.precision, y*settings.precision)
 
-        
-        self.worker.add_object(Blood(self.rect.center, Worker=self.worker))
         self.rotate_to_player(self.player)
 
         self.weapon.run()

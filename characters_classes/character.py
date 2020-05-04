@@ -4,6 +4,7 @@ from os.path import normpath, normcase
 from env_classes.weapons import AutoShotgun, AutomaticGun
 from characters_classes.deafult_object import GameObject
 from tools.utils import side_collide
+from object_classes.blood import Blood
 
 
 class character(GameObject):
@@ -52,7 +53,7 @@ class character(GameObject):
         pass
     
     def hit(self):
-        pass
+        self.worker.add_object(Blood((self.rect.x, self.rect.y), self.worker))
 
     def process_logic(self, lvl):
         self.speed_correction()
