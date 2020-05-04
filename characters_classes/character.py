@@ -6,12 +6,13 @@ from characters_classes.deafult_object import GameObject
 from tools.utils import side_collide
 from interface.health import HpInterface
 from object_classes.blood import Blood
+from object_classes.heal import HealObject
 
 
 class character(GameObject):
-    def __init__(self, hp=100, ammo=100, x=600, y=800, size=40, speed=10, 
+    def __init__(self, hp=100, ammo=100, x=600, y=800, size=40, speed=10,
                  img=normpath('resources/images/character/Bob.png'), Worker=None,
-                 weapon = AutomaticGun):
+                 weapon=AutomaticGun):
         # pygame.sprite.Sprite.__init__(self)
         self.hp = hp
         self.ammo = ammo
@@ -34,6 +35,9 @@ class character(GameObject):
         self.weapon = weapon(Worker=self.worker, Character=self)
         self.hp_indicator = HpInterface(self)
 
+    def heal(self):
+        self.hp_modifier(20)
+
     def control_logic(self):
         pass
 
@@ -52,10 +56,12 @@ class character(GameObject):
             self.shift_x = tmp * k_x
 
     def death(self):
+        self.worker.add_object(HealObject(
+            (self.rect.center), Worker=self.worker))
         self.worker.delete_char(self)
-    
+
     def hp_modifier(self, dhp):
-        self.hp += dhp if self.hp + dhp >= 0 else 0
+        self.hp += dhp if self.hp + dhp >= 0 and self.hp + dhp <= 100 else 0
         if self.hp == 0:
             self.death()
 
@@ -63,7 +69,6 @@ class character(GameObject):
         self.worker.add_object(Blood((self.rect.x, self.rect.y), self.worker))
         self.hp_modifier(-damage)
         self.move(vector.x, vector.y)
-        
 
     def process_logic(self, lvl):
         self.speed_correction()

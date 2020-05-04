@@ -19,11 +19,11 @@ class screen(pygame.sprite.Sprite):
         self.screen.blit(self.background, self.background.get_rect())
         level.draw(self.screen)
         #self.screen.blit(self.image,self.image.get_rect())
-        for character in characters:
-            character.draw(self.screen)
-        
         for item in objects:
             item.draw(self.screen)
+        
+        for character in characters:
+            character.draw(self.screen)
 
     def return_screen(self):
         return self.screen
