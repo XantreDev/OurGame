@@ -22,6 +22,16 @@ class Point:
     
     def as_tuple(self):
         return (self.x, self.y)
+        
+    def __mul__(self, other: int):
+        self.x *= other
+        self.y *= other
+        return self
+    
+    def __truediv__(self, other: int):
+        self.x /= other
+        self.y /= other
+        return self
 
 class Vector(Point):
     def __init__(self, x, y):
@@ -32,6 +42,8 @@ class Vector(Point):
 
     def abs_y(self):
         return abs(self.y)
+
+    
 
 def route_to_vector(route):
     return Vector(route.pos2[0] - route.pos1[0], route.pos2[1] - route.pos1[1])

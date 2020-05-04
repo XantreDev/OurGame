@@ -4,6 +4,7 @@ from os.path import normpath, normcase
 from env_classes.weapons import AutoShotgun, AutomaticGun, SemiautomaticGun
 from characters_classes.deafult_object import GameObject
 from tools.utils import side_collide
+from interface.health import HpInterface
 from object_classes.blood import Blood
 
 
@@ -31,6 +32,7 @@ class character(GameObject):
         self.collide_y = False
         self.worker = Worker
         self.weapon = weapon(Worker=self.worker, Character=self)
+        self.hp_indicator = HpInterface(self)
 
     def control_logic(self):
         pass
@@ -52,8 +54,16 @@ class character(GameObject):
     def death(self):
         pass
     
-    def hit(self):
+    def hp_modifier(self, dhp):
+        self.hp += dhp if self.hp + dhp >= 0 else 0
+        if self.hp == 0:
+            self.death()
+
+    def hit(self, damage, vector):
         self.worker.add_object(Blood((self.rect.x, self.rect.y), self.worker))
+        self.hp_modifier(-damage)
+        self.move(vector.x, vector.y)
+        
 
     def process_logic(self, lvl):
         self.speed_correction()
@@ -80,6 +90,7 @@ class character(GameObject):
         self.control_logic()
         self.process_logic(map)
         self.weapon.run()
+        self.hp_indicator.update()
 
     def collide(self, lvl):
         self.collide_with_lvl(lvl)
@@ -89,3 +100,4 @@ class character(GameObject):
 
     def draw(self, screen):
         screen.blit(self.image, self.rect)
+        self.hp_indicator.draw(screen)

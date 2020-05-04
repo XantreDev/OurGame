@@ -55,7 +55,7 @@ class Route:
 
         return point, *corrector, *covered_distance
     
-    def collide_with_characters(self, rect, characters, creator):
+    def collide_with_characters(self, rect, characters, creator, damage):
         vector = route_to_vector(self)
         S = vector.abs_x() + vector.abs_y()
         vector = self.instant_vector(vector)
@@ -75,7 +75,7 @@ class Route:
             rect.center = [*point]
             for item in characters:
                 if item not in into and rect.colliderect(item):
-                    item.hit()
+                    item.hit(damage, vector / 4)
                     into.append(item)
             
             if len(into) == len(characters):

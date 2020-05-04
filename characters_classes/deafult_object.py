@@ -2,6 +2,10 @@ class GameObject:
     def __init__(self, rect):
         self.rect = rect
 
+    def move(self, dx, dy):
+        self.rect.centerx += dx
+        self.rect.centery += dy
+
     def left_side(self):
         return [
             self.rect.topleft, 

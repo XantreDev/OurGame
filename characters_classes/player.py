@@ -57,6 +57,9 @@ class Player(character):
         self.control_logic(events)
         self.process_logic(map)
         self.weapon.run()
+        self.hp_indicator.update()
+
 
     def draw(self, screen):
         screen.blit(self.image, self.rect)
+        self.hp_indicator.draw(screen)

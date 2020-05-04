@@ -14,7 +14,7 @@ import settings
 class Bullet(TemporaryObject):
     bullet_color = (0, 0, 0)
 
-    def __init__(self, cord=(0, 0), rotation=100, speed=20, durability=100, creator=None):
+    def __init__(self, cord=(0, 0), rotation=100, speed=20, durability=100, damage = 5, creator=None):
         # print(cord)
         super().__init__(cord, settings.bullet_size, color=self.bullet_color)
         self.rot_to_speed(rotation, speed)
@@ -24,6 +24,7 @@ class Bullet(TemporaryObject):
         self.durability = durability
         self.creator = creator
         self.collide_count = 0
+        self.damage = damage
 
     def rot_to_speed(self, rotation, speed):
         rotation = 360 - rotation
@@ -68,7 +69,8 @@ class Bullet(TemporaryObject):
     def collide_with_characters(self, characters):
         self.route.collide_with_characters(self.rect, 
                                            characters,
-                                           self.creator)
+                                           self.creator,
+                                           self.damage)
 
     def liveability_check(self):
         if self.collide_count > self.durability:

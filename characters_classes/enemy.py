@@ -30,7 +30,10 @@ class Enemy(character):
         self.rotate_to_player(self.player)
 
         self.weapon.run()
+        self.hp_indicator.update()
+
         self.timer+=1
+        
 
     def rotate_to_player(self, player):
         angle = self.angle(player)
@@ -43,6 +46,3 @@ class Enemy(character):
                                         self.rect.centerx - player.rect.centerx)
                              + math.pi))
 
-    def hit(self):
-        super().hit()
-        print(self)
