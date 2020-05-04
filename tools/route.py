@@ -2,13 +2,14 @@ import pygame
 
 from tools.vector import Vector
 from characters_classes.deafult_object import GameObject
-from tools.utils import side_collide
+from tools.utils import Point, side_collide
+import settings
 
 
 class Route:
-    def __init__(self):
-        self.pos1 = (0, 0)
-        self.pos2 = (0, 0)
+    def __init__(self, pos1= (0, 0), pos2 = (0, 0)):
+        self.pos1 = pos1
+        self.pos2 = pos2
 
     def update(self, pos1, pos2):
         self.pos1 = pos1
@@ -61,3 +62,25 @@ class Route:
             return [1, -1]
         else:
             return [-1, -1]
+    
+    @property
+    def S(self):
+        return abs(self.pos1[0] - self.pos2[0]) + abs(self.pos1[1] - self.pos2[1])
+    
+    def roadblocks(self, objects):
+        vector = self.instant_vector(Vector(self.pos2[0] - self.pos1[0], self.pos2[1] - self.pos1[1]))
+        vector.y *= (settings.precision // 2)
+        vector.x *= (settings.precision // 2)
+        point = Point(self.pos1[0], self.pos1[1])
+        S = self.S
+        while S > 0:
+            for obj in objects:
+                if obj.collidepoint(point.as_tuple()):
+                    return True
+            point.move(vector.x, vector.y)
+            # print(point.as_tuple())
+            S -= vector.abs_x() + vector.abs_y()
+        return False
+          
+            
+        

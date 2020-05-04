@@ -10,3 +10,15 @@ def side_collide(obj, points):
         for point in points:
             c += int(obj.collidepoint(point))
         return (c >= 2)
+
+class Point:
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+    
+    def move(self, dx, dy):
+        self.x += dx
+        self.y += dy
+    
+    def as_tuple(self):
+        return (self.x, self.y)

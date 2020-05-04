@@ -3,10 +3,11 @@ class GameObject:
         self.rect = rect
 
     def left_side(self):
-        return [self.rect.topleft, 
-                self.rect.midleft, 
-                self.rect.bottomleft
-            ]
+        return [
+            self.rect.topleft, 
+            self.rect.midleft, 
+            self.rect.bottomleft
+        ]
 
     def right_side(self):
         return [

@@ -39,7 +39,7 @@ class Worker:
             for item in self.Characters:
                 item.logic(self.L, events_array)
             
-            self.enemy.run(self.Characters[0])
+            self.enemy.run(self.Characters[0], self.L.objects)
             
             self.L.draw(self.S.screen)
             

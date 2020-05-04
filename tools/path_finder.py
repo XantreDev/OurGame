@@ -1,9 +1,13 @@
 from os.path import normpath
-from queue import Queue
+from queue import PriorityQueue, Queue
 from levels.level.lvl1_field import Field
 
+
+def heuristic(a, b):
+   return abs(a[0]- b[0]) + abs(a[1] - b[1])
+
 def pathfinder(start, goal):
-    frontier = Queue()
+    frontier = PriorityQueue()
     frontier.put(start)
     came_from = {}
     came_from[start] = None
@@ -17,7 +21,8 @@ def pathfinder(start, goal):
         
         for next in graph.neighbors(current):
             if next not in came_from:
-                frontier.put(next)
+                priority = heuristic(next, goal)
+                frontier.put(next, priority)
                 came_from[next] = current
     
     current = goal
@@ -35,6 +40,7 @@ class Graph:
 
     def neighbors(self, current):
         i, j = current
+        
         exit = []
         if i > 0 and self.field[i-1][j] != -1:
             exit.append((i-1, j))

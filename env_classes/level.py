@@ -2,6 +2,7 @@ import random
 from os.path import normcase, normpath
 
 import pygame
+import settings
 
 colors = [(121, 196, 113), (141, 207, 244)]
 
@@ -74,7 +75,7 @@ class level:
             self.draw(screen)
     
     # precision - точность заполнения матрицы, то есть при значении равном size[0 либо 1 в зависимости от того куда надо подставить] будет воссоздана картинка уровня в размере
-    def field_creator(self, size=(1600, 900), precision=80) -> None:
+    def field_creator(self, size=(1600, 900)) -> None:
         """
         Creates two-dimensional array of level.
         """
@@ -82,18 +83,18 @@ class level:
         # 80 - оптимальное значение на данный момент
         with open(normpath('levels/level/lvl1' + '_field.py'), 'w') as f:
             f.write('Field = [' + '\n')
-            for i in range(0, size[1], size[0]//precision):
+            for i in range(0, size[0], settings.precision):
                 buf_mas = list()
-                for j in range(0, size[0], size[1]//precision):
+                for j in range(0, size[1], settings.precision):
                     tmp = False
                     for item in self.objects:
-                        if (item.collidepoint(j, i)):
+                        if (item.collidepoint(i, j)):
                             tmp = True
                             break
                     if tmp:
                         buf_mas.append(-1)
                     else:
-                        buf_mas.append(1)
+                        buf_mas.append(0)
                 f.write('   '+str(buf_mas) + ',\n')
             f.write(']')
 
