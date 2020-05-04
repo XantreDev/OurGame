@@ -41,7 +41,8 @@ class Bullet(TemporaryObject):
         self.rect.centerx += self.shift_x
         self.rect.centery += self.shift_y
 
-        self.collide(level_objects, characters)
+        self.collide(level_objects)
+        self.collide_with_characters(characters)
 
         if self.timer > 2:
             self.liveability_check()
@@ -58,8 +59,7 @@ class Bullet(TemporaryObject):
         self.rect.centerx += self.shift_x - d1
         self.rect.centery += self.shift_y - d2
 
-    def collide(self, objects, characters): #TODO: переделать коллизии
-        self.collide_with_characters(characters)
+    def collide(self, objects): #TODO: переделать коллизии
         for obj in objects:
             if obj.colliderect(self.rect):
                 self.collide_handler(obj)

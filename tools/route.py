@@ -59,7 +59,12 @@ class Route:
         vector = route_to_vector(self)
         S = vector.abs_x() + vector.abs_y()
         vector = self.instant_vector(vector)
-
+        
+        vector.y *= 10
+        vector.x *= 10
+        
+        into = [creator]
+        
         point = [*self.pos1]
         rect = pygame.Rect(rect)
         
@@ -68,9 +73,13 @@ class Route:
             point[0] += vector.x
             point[1] += vector.y
             rect.center = [*point]
-            for character in characters:
-                if character is not creator and character.rect.colliderect(rect):
-                    character.hit()
+            for item in characters:
+                if item not in into and rect.colliderect(item):
+                    item.hit()
+                    into.append(item)
+            
+            if len(into) == len(characters):
+                return
         
     
     def corrector_execute(self, game_object, obj):

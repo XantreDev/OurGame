@@ -53,7 +53,7 @@ class Worker:
             if wait > 0:
                 pygame.time.wait(floor(wait))
 
-            print(for_fps.get_fps())
+            # print(for_fps.get_fps())
 
             if self.timer % 80 == 0:
                 print(len(self.Objects))

@@ -83,12 +83,12 @@ class level:
         # 80 - оптимальное значение на данный момент
         with open(normpath('levels/level/lvl1' + '_field.py'), 'w') as f:
             f.write('Field = [' + '\n')
-            for i in range(0, size[0], settings.precision):
+            for i in range(0, size[1], settings.precision):
                 buf_mas = list()
-                for j in range(0, size[1], settings.precision):
+                for j in range(0, size[0], settings.precision):
                     tmp = False
                     for item in self.objects:
-                        if (item.collidepoint(i, j)):
+                        if (item.collidepoint(j, i)):
                             tmp = True
                             break
                     if tmp:

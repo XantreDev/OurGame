@@ -12,23 +12,25 @@ class Enemy(character):
         super().__init__(img=img, weapon=weapon, Worker=Worker)
         self.rect.center = coordinates
         self.player = player
+        self.timer = 0
 
     def run(self, objects):
         if not Route(self.rect.center, self.player.rect.center).roadblocks(objects):
             self.weapon.activate()
         else:
-            path = pathfinder((self.rect.centerx // settings.precision, self.rect.centery // settings.precision),
-                              (self.player.rect.centerx // settings.precision, self.player.rect.centery // settings.precision))
+            path = pathfinder((self.rect.centery // settings.precision, self.rect.centerx // settings.precision),
+                              (self.player.rect.centery // settings.precision, self.player.rect.centerx // settings.precision))
             # print(path)
             if len(path) > 1:
-                x, y = path[1]
+                y, x = path[1]
             else:
-                x, y = path[0]
+                y, x = path[0]
             self.rect.center = (x*settings.precision, y*settings.precision)
 
         self.rotate_to_player(self.player)
 
         self.weapon.run()
+        self.timer+=1
 
     def rotate_to_player(self, player):
         angle = self.angle(player)
@@ -40,3 +42,7 @@ class Enemy(character):
         return (math.degrees(math.atan2(self.rect.centery - player.rect.centery,
                                         self.rect.centerx - player.rect.centerx)
                              + math.pi))
+
+    def hit(self):
+        super().hit()
+        print(self)

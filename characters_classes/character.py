@@ -1,7 +1,7 @@
 import pygame
 import math
 from os.path import normpath, normcase
-from env_classes.weapons import AutoShotgun, AutomaticGun
+from env_classes.weapons import AutoShotgun, AutomaticGun, SemiautomaticGun
 from characters_classes.deafult_object import GameObject
 from tools.utils import side_collide
 from object_classes.blood import Blood
