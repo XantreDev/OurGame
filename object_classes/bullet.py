@@ -14,12 +14,11 @@ import settings
 class Bullet(TemporaryObject):
     bullet_color = (0, 0, 0)
 
-    def __init__(self, cord=(0, 0), rotation=100, speed=20, durability=100, damage = 5, creator=None):
+    def __init__(self, cord=(0, 0), rotation=100, speed=20, durability=10, damage = 5, creator=None):
         # print(cord)
         super().__init__(cord, settings.bullet_size, color=self.bullet_color)
         self.rot_to_speed(rotation, speed)
         self.speed = speed
-        self.off_frame = False
         self.route = Route()
         self.durability = durability
         self.creator = creator
@@ -74,11 +73,13 @@ class Bullet(TemporaryObject):
 
     def liveability_check(self):
         if self.collide_count > self.durability:
-            self.off_frame = True
+            self.active = False
 
     def draw(self, screen):
+        self.hold_at_screen(screen)
         super().draw(screen)
-        if ((self.timer > 10 and self.timer % 2 == 0)
-            and ((0 > self.rect.centerx or self.rect.centerx > screen.get_width())
-                 or (0 > self.rect.centery or self.rect.centery > screen.get_height()))):
-            self.off_frame = True
+        if (self.timer > 90 and self.timer % 2 == 0):
+            self.active = False
+        #     and ((0 > self.rect.centerx or self.rect.centerx > screen.get_width())
+        #          or (0 > self.rect.centery or self.rect.centery > screen.get_height()))):
+        #     self.active = False

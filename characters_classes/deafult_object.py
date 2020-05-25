@@ -33,3 +33,7 @@ class GameObject:
             self.rect.midtop,
             self.rect.topleft
         ]
+        
+    def hold_at_screen(self, screen):
+        self.rect.x = (self.rect.x % screen.get_width() + screen.get_width()) % screen.get_width()
+        self.rect.y = (self.rect.y % screen.get_height() + screen.get_height()) % screen.get_height()

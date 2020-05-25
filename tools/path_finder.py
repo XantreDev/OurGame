@@ -1,10 +1,8 @@
 from os.path import normpath
 from queue import PriorityQueue, Queue
 from levels.level.lvl1_field import Field
+from tools.utils import heuristic
 
-
-def heuristic(a, b):
-    return abs(a[0]- b[0]) + abs(a[1] - b[1])
 
 def pathfinder(start, goal):
     frontier = Queue()

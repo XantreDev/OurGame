@@ -10,12 +10,12 @@ class HealObject(TemporaryObject):
     
     def run(self, *args):
         super().run(*args)
-        if self.player.rect.colliderect(self.rect) and not self.off_frame:
+        if self.player.rect.colliderect(self.rect) and self.active:
             self.player.heal()
-            self.off_frame = True
+            self.active = False
     
     def draw(self, screen):
-        if not self.off_frame:
+        if self.active:
             super().draw(screen)
         
     

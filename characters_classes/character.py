@@ -34,6 +34,7 @@ class character(GameObject):
         self.worker = Worker
         self.weapon = weapon(Worker=self.worker, Character=self)
         self.hp_indicator = HpInterface(self)
+        self.alive = True
 
     def heal(self):
         self.hp_modifier(20)
@@ -58,34 +59,38 @@ class character(GameObject):
     def death(self):
         self.worker.add_object(HealObject(
             (self.rect.center), Worker=self.worker))
-        self.worker.delete_char(self)
+        self.alive = False
 
     def hp_modifier(self, dhp):
         self.hp += dhp if self.hp + dhp >= 0 and self.hp + dhp <= 100 else 0
         if self.hp == 0:
             self.death()
 
+    def stop_move(self):
+        self.shift_x, self.shift_y = 0, 0
+
     def hit(self, damage, vector):
         self.worker.add_object(Blood((self.rect.x, self.rect.y), self.worker))
         self.hp_modifier(-damage)
         self.move(vector.x, vector.y)
+        self.hp_indicator.update()
 
-    def process_logic(self, lvl):
+    def process_logic(self, level):
         self.speed_correction()
         x, y = self.rect.centerx, self.rect.centery
-        self.rect.centerx += self.shift_x
-        self.rect.centery += self.shift_y
-        self.collide(lvl)
+        self.move(self.shift_x, self.shift_y)
+        self.collide(level.objects)
         if (self.collide_x):
             self.rect.centerx = x
         if (self.collide_y):
             self.rect.centery = y
         self.rotation()
 
-    def collide_with_lvl(self, lvl):
+    def collide_with_lvl(self, objects):
         self.collide_x = False
         self.collide_y = False
-        for item in lvl.objects:
+        
+        for item in objects:
             if side_collide(item, self.top_side()) or side_collide(item, self.bottom_side()):
                 self.collide_y = True
             if side_collide(item, self.left_side()) or side_collide(item, self.right_side()):
@@ -97,12 +102,13 @@ class character(GameObject):
         self.weapon.run()
         self.hp_indicator.update()
 
-    def collide(self, lvl):
-        self.collide_with_lvl(lvl)
+    def collide(self, level_objects):
+        self.collide_with_lvl(level_objects)
 
     def rotation(self):  # будет работать на логике наведения прицела у противников
         pass
 
     def draw(self, screen):
+        self.hold_at_screen(screen)
         screen.blit(self.image, self.rect)
         self.hp_indicator.draw(screen)

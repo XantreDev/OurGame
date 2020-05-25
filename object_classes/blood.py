@@ -9,4 +9,4 @@ class Blood(TemporaryObject):
     
     def run(self, *args):
         super().run(*args)
-        self.off_frame = True if self.timer > 15 else False
+        self.active = False if self.timer > 15 else True

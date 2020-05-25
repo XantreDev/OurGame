@@ -11,7 +11,7 @@ class Player(character):
     def __init__(self, hp=100, ammo=100, x=600, y=800, size=40, speed=10, img='Bob.png', Worker=None):
         super().__init__(Worker=Worker)
         self.mouse_pos = (0, 0)
-
+        
     def control_logic(self, events=None):
         if events is None:
             events = list()
@@ -53,6 +53,9 @@ class Player(character):
             self.a = angle
         # print(self.a)
 
+    def hit(self, *args):
+        pass
+
     def logic(self, map, events):
         self.control_logic(events)
         self.process_logic(map)
@@ -61,5 +64,6 @@ class Player(character):
 
 
     def draw(self, screen):
+        self.hold_at_screen(screen)
         screen.blit(self.image, self.rect)
         self.hp_indicator.draw(screen)

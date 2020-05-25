@@ -22,11 +22,11 @@ class Worker:
         self.characters.append(Enemy(player=self.characters[0], Worker=self))
         self.L = level()
         self.timer = 0
-        pygame.mixer.init()
-        pygame.mixer.music.load(normpath("music/sound.ogg"))
+        # pygame.mixer.init()
+        # pygame.mixer.music.load(normpath("music/sound.ogg"))
 
     def run(self):
-        pygame.mixer.music.play()
+        # pygame.mixer.music.play()
         for_fps = pygame.time.Clock()
         while self.work == True:
             for_fps.tick()
@@ -60,7 +60,11 @@ class Worker:
 
             # print(for_fps.get_fps())
 
+            self.delete_chars()
+            self.objects_control()
+
             if self.timer % 80 == 0:
+                pass
                 print(len(self.Objects))
                 self.objects_control()
                 self.add_char(Enemy(cord=spawn_generator(),
@@ -70,12 +74,11 @@ class Worker:
             self.timer += 1
         sys.exit()
 
-    def delete_char(self, char):
+    def delete_chars(self):
         i = 0
         while i < len(self.characters):
-            if self.characters[i] is char:
+            if not self.characters[i].alive:
                 del self.characters[i]
-                return
             else:
                 i += 1
 
@@ -96,7 +99,7 @@ class Worker:
     def objects_control(self):
         i = int(0)
         while i < len(self.Objects):
-            if self.Objects[i].off_frame:
+            if not self.Objects[i].active:
                 del self.Objects[i]
             else:
                 i += 1

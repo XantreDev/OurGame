@@ -96,8 +96,7 @@ class Route:
     
     def roadblocks(self, objects):
         vector = self.instant_vector(route_to_vector(self))
-        vector.y *= (settings.precision // 3)
-        vector.x *= (settings.precision // 3)
+        vector *= (settings.precision // 3)
         point = Point(self.pos1[0], self.pos1[1])
         S = self.S
         while S > 0:

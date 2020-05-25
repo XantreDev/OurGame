@@ -2,6 +2,9 @@ from levels.level.lvl1_field import Field
 from random import randrange
 import settings
 
+def heuristic(a, b):
+    return abs(a[0]- b[0]) + abs(a[1] - b[1])
+
 def degree_editor(angle):
     if angle < 0:
         return (360 - angle)

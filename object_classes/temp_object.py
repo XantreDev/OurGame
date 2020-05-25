@@ -7,7 +7,7 @@ class TemporaryObject(GameObject):
         super().__init__(pygame.Rect(cord, size))
         self.worker = Worker
         self.color = color
-        self.off_frame = False
+        self.active = True
         self.timer = 0
 
     def run(self, *args):
