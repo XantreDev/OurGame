@@ -5,7 +5,7 @@ from tools.path_finder import Graph, pathfinder
 import math as math
 import settings
 from tools.route import Route
-from tools.utils import Vector
+from tools.utils import Vector, comprasion
 
 
 class Enemy(character):
@@ -24,7 +24,7 @@ class Enemy(character):
             x, y = self.player.rect.center
             x //= settings.precision
             y //= settings.precision
-            if ((self.destination_point not in Graph().neighbors((y, x))
+            if ( not comprasion(self.player.block, (x, y)) and (self.destination_point not in Graph().neighbors((y, x))
                  and self.destination_point != (y, x))
                 or (abs(self.rect.x // settings.precision - self.path[0][1])
                     + abs(self.rect.y // settings.precision - self.path[0][0])
@@ -46,8 +46,10 @@ class Enemy(character):
 
     def go_on_path(self):
         x, y = self.rect.x, self.rect.y
+        
         if not self.path:
             return
+        
         x_on_matrix = x // settings.precision
         y_on_matrix = y // settings.precision
         passed = 0

@@ -26,7 +26,10 @@ def pathfinder(start, goal):
     current = goal
     path = [current]
     while current != start:
-        current = came_from[current]
+        try:
+            current = came_from[current]
+        except:
+            break
         path.append(current)
     path.reverse()
     return path

@@ -22,11 +22,11 @@ class Worker:
         self.characters.append(Enemy(player=self.characters[0], Worker=self))
         self.L = level()
         self.timer = 0
-        # pygame.mixer.init()
-        # pygame.mixer.music.load(normpath("music/sound.ogg"))
+        pygame.mixer.init()
+        pygame.mixer.music.load(normpath("music/sound.ogg"))
 
     def run(self):
-        # pygame.mixer.music.play()
+        pygame.mixer.music.play()
         for_fps = pygame.time.Clock()
         while self.work == True:
             for_fps.tick()
