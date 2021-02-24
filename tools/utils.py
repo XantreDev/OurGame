@@ -34,8 +34,9 @@ def comprasion(f_point, s_point):
     x1, y1 = f_point
     x2, y2 = s_point
     delta = abs(x1-x2) + abs(y1-y2)
-    if delta < settings.to_comprasion:
-        pass
+    if delta <= settings.to_comprasion*2:
+        return False
+    return True
     
 
 class Point:

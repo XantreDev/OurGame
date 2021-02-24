@@ -24,16 +24,14 @@ class Enemy(character):
             x, y = self.player.rect.center
             x //= settings.precision
             y //= settings.precision
-            if ( not comprasion(self.player.block, (x, y)) and (self.destination_point not in Graph().neighbors((y, x))
-                 and self.destination_point != (y, x))
-                or (abs(self.rect.x // settings.precision - self.path[0][1])
-                    + abs(self.rect.y // settings.precision - self.path[0][0])
-                    >= 1)):
+            if ( not self.path or (comprasion(self.player.block, (self.path[-1][1], self.path[-1][0])))):
+                                #    and (self.destination_point not in Graph().neighbors((y, x))and self.destination_point != (y, x)))):
                 path = pathfinder((self.rect.y // settings.precision, self.rect.x // settings.precision),
                                   (self.player.rect.y // settings.precision, self.player.rect.x // settings.precision))
-                # print(path)
+                print(path)
                 self.path = path
                 self.destination_point = path[-1]
+                print(self.player.block, (self.path[-1][1], self.path[-1][0]))
         if self.path:
             self.go_on_path()
         self.rotate_to_player(self.player)
@@ -60,17 +58,22 @@ class Enemy(character):
 
         i = 0
 
-        while i < len(self.path) and passed > 0:
-            if i <= passed:
-                del self.path[i]
-                passed -= 1
-            else:
-                i += 1
+        # if (x_on_matrix == self.path[0][1] and y_on_matrix == self.path[0][0]):
+        #     del self.path[0]
+
+        self.path = self.path[passed:]
+
+        # while i < len(self.path) and passed > 0:
+        #     if i <= passed:
+        #         del self.path[i]
+        #         passed -= 1
+        #     else:
+        #         i += 1
         
         if not self.path:
             return
 
-        print(self.path)
+        # print(self.path)
 
         into_y, into_x = (self.path[0][0] * settings.precision,
                           self.path[0][1] * settings.precision)
