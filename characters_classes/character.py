@@ -12,7 +12,7 @@ from object_classes.heal import HealObject
 class character(GameObject):
     def __init__(self, hp=100, ammo=100, x=600, y=800, size=40, speed=10,
                  img=normpath('resources/images/character/Bob.png'), Worker=None,
-                 weapon=Shotgun):
+                 weapon=AutomaticGun):
         # pygame.sprite.Sprite.__init__(self)
         self.hp = hp
         self.ammo = ammo

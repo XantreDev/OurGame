@@ -9,7 +9,7 @@ from tools.utils import Vector, comprasion, more_accurate_comprasion
 
 
 class Enemy(character):
-    def __init__(self, img=normpath('resources/images/character/Bob.png'), cord=(200, 400), player=None, weapon=SemiautomaticGun, Worker=None):
+    def __init__(self, img=normpath('resources/images/character/enemy.png'), cord=(200, 400), player=None, weapon=SemiautomaticGun, Worker=None):
         super().__init__(img=img, weapon=weapon, Worker=Worker)
         self.rect.center = cord
         self.player = player
@@ -32,10 +32,10 @@ class Enemy(character):
                                 #    and (self.destination_point not in Graph().neighbors((y, x))and self.destination_point != (y, x)))):
                 path = pathfinder((self.rect.y // settings.precision, self.rect.x // settings.precision),
                                   (self.player.rect.y // settings.precision, self.player.rect.x // settings.precision))
-                print(path)
+                # print(path)
                 self.path = path
                 self.destination_point = path[-1]
-                print(self.player.block, (self.path[-1][1], self.path[-1][0]))
+                # print(self.player.block, (self.path[-1][1], self.path[-1][0]))
         if self.path:
             self.go_on_path()
         self.rotate_to_player(self.player)
@@ -57,7 +57,7 @@ class Enemy(character):
                 passed = i + 1
         
         
-        if passed != -1 or self.moving==False:
+        if passed != -1 or self.moving == False:
             # print("before: " ,self.path)
             self.moving = True
             self.path = self.path[passed:]
@@ -78,7 +78,7 @@ class Enemy(character):
             
             # print(vector.x, vector.y)
             
-            k = 0.02
+            k = 0.012
             
             self.shift_x = vector.x * k
             self.shift_y = vector.y * k

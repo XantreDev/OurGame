@@ -53,4 +53,4 @@ class Graph:
             exit.append((i, j+1))
         return exit
 
-pathfinder((5,5), (10,10))
+# pathfinder((5,5), (10,10))

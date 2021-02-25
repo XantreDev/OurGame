@@ -22,7 +22,7 @@ def spawn_generator():
     i = randrange(1, len(Field)-2)
     j = randrange(1, len(Field[0])-2)
     
-    print(i, j)
+    # print(i, j)
     
     while Field[i][j] == -1:
         i = randrange(1, len(Field)-2)

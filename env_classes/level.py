@@ -4,13 +4,13 @@ from os.path import normcase, normpath
 import pygame
 import settings
 
-colors = [(121, 196, 113), (141, 207, 244)]
+colors = [(81,25,250),(175,45,180)]
 
 
 class level:
     def __init__(self):
         self.objects = list()
-        self.color = [(121, 196, 113), (141, 207, 244)]
+        self.color = [(81,25,250),(175,45,180)]
         random.seed()
         self.import_all()
         self.x1, self.x2, self.y1, self.y2 = 0, 0, 0, 0
@@ -100,4 +100,4 @@ class level:
 
     def draw(self, screen):
         for i in range(len(self.objects)):
-            pygame.draw.rect(screen, self.color[0], self.objects[i])
+            pygame.draw.rect(screen, self.color[i%2], self.objects[i])

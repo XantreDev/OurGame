@@ -1,7 +1,7 @@
 import pygame
 import random
 
-colors = [(121,196,113),(141,207,244)]
+colors = [(81,25,250),(175,45,180)]
 
 class lvl:
     def __init__(self):

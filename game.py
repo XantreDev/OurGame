@@ -24,10 +24,11 @@ class Worker:
         self.timer = 0
         pygame.mixer.init()
         # pygame.mixer.music.load(normpath("music/sound.ogg"))
-        pygame.mixer.music.load(normpath("music/DELTARUNE_CHAPTER_ONE_-_.ogg"))
+        # pygame.mixer.music.load(normpath("music/DELTARUNE_CHAPTER_ONE_-_.ogg"))
+        pygame.mixer.music.load(normpath("music/soundtrack.ogg"))
 
     def run(self):
-        # pygame.mixer.music.play(loops=-1)
+        pygame.mixer.music.play(loops=-1)
         for_fps = pygame.time.Clock()
         while self.work == True:
             for_fps.tick()
@@ -64,10 +65,10 @@ class Worker:
             self.delete_chars()
             self.objects_control()
 
-            if self.timer % 80 == 0:
+            if self.timer % 60 == 0:
                 pass
-                print(len(self.Objects))
-                self.objects_control()
+                # print(len(self.Objects))
+                if self.timer%120: self.objects_control()
                 self.add_char(Enemy(cord=spawn_generator(),
                                     player=self.characters[0], Worker=self))
             if self.timer > 1000:

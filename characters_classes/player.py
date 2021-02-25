@@ -57,7 +57,7 @@ class Player(character):
 
     def hit(self, *args):
         arg = args[0]
-        # self.hp_modifier(-arg)
+        self.hp_modifier(-arg)
 
     def logic(self, map, events):
         self.control_logic(events)
