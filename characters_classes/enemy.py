@@ -5,7 +5,7 @@ from tools.path_finder import Graph, pathfinder
 import math as math
 import settings
 from tools.route import Route
-from tools.utils import Vector, comprasion
+from tools.utils import Vector, comprasion, more_accurate_comprasion
 
 
 class Enemy(character):
@@ -45,46 +45,79 @@ class Enemy(character):
     def go_on_path(self):
         x, y = self.rect.x, self.rect.y
         
-        if not self.path:
-            return
-        
-        x_on_matrix = x // settings.precision
-        y_on_matrix = y // settings.precision
-        passed = 0
-
-        for i in range(len(self.path)):
-            if (y_on_matrix, x_on_matrix) == self.path[i]:
-                passed = i + 1
-
         i = 0
-
-        # if (x_on_matrix == self.path[0][1] and y_on_matrix == self.path[0][0]):
-        #     del self.path[0]
-
-        self.path = self.path[passed:]
-
-        # while i < len(self.path) and passed > 0:
-        #     if i <= passed:
-        #         del self.path[i]
-        #         passed -= 1
-        #     else:
-        #         i += 1
         
-        if not self.path:
-            return
+        passed = -1
+        
+        for i in range(len(self.path)):
+            if more_accurate_comprasion((y, x),(self.path[i][0] * settings.precision, self.path[i][1]*settings.precision)):
+                passed = i + 1
+        
+        
+        if passed != -1:
+            self.path = self.path[passed:]
+        
+            if not self.path: return
+                   
+            target_y, target_x = self.path[0][1] * settings.precision, self.path[0][0] * settings.precision
 
-        # print(self.path)
+            vector = Vector((target_x - x), (target_y - y))
+            
+            # if abs(vector.x) + abs(vector.y) == 0:
+            #     k = 0
+            # else:
+            #     k = self.speed ** 2 / (vector.x ** 2 + vector.y ** 2)
+            # k *= 2
+            
+            k = 0.1
+            
+            self.shift_x = vector.x * k
+            self.shift_y = vector.y * k
+                
+        
+        
+        
+        # СТАРАЯ РЕАЛИЗАЦИЯ 
+        # if not self.path:
+        #     return
+        
+        # x_on_matrix = x // settings.precision
+        # y_on_matrix = y // settings.precision
+        # passed = 0
 
-        into_y, into_x = (self.path[0][0] * settings.precision,
-                          self.path[0][1] * settings.precision)
-        vector = Vector((into_x - x), (into_y - y))
-        if vector.x + vector.y == 0:
-            k = 0
-        else:
-            k = self.speed ** 2 / (vector.x ** 2 + vector.y ** 2)
-        k *= 2
-        self.shift_x = vector.x * k
-        self.shift_y = vector.y * k
+        # for i in range(len(self.path)):
+        #     if (y_on_matrix, x_on_matrix) == self.path[i]:
+        #         passed = i + 1
+
+        # i = 0
+
+        # # if (x_on_matrix == self.path[0][1] and y_on_matrix == self.path[0][0]):
+        # #     del self.path[0]
+
+        # self.path = self.path[passed:]
+
+        # # while i < len(self.path) and passed > 0:
+        # #     if i <= passed:
+        # #         del self.path[i]
+        # #         passed -= 1
+        # #     else:
+        # #         i += 1
+        
+        # if not self.path:
+        #     return
+
+        # # print(self.path)
+
+        # into_y, into_x = (self.path[0][0] * settings.precision,
+        #                   self.path[0][1] * settings.precision)
+        # vector = Vector((into_x - x), (into_y - y))
+        # if vector.x + vector.y == 0:
+        #     k = 0
+        # else:
+        #     k = self.speed ** 2 / (vector.x ** 2 + vector.y ** 2)
+        # k *= 2
+        # self.shift_x = vector.x * k
+        # self.shift_y = vector.y * k
 
     def rotate_to_player(self, player):
         angle = self.angle(player)

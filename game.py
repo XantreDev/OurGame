@@ -27,7 +27,7 @@ class Worker:
         pygame.mixer.music.load(normpath("music/DELTARUNE_CHAPTER_ONE_-_.ogg"))
 
     def run(self):
-        pygame.mixer.music.play(loops=-1)
+        # pygame.mixer.music.play(loops=-1)
         for_fps = pygame.time.Clock()
         while self.work == True:
             for_fps.tick()

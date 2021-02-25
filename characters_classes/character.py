@@ -1,7 +1,7 @@
 import pygame
 import math
 from os.path import normpath, normcase
-from env_classes.weapons import AutoShotgun, AutomaticGun, SemiautomaticGun
+from env_classes.weapons import AutoShotgun, AutomaticGun, SemiautomaticGun, Shotgun
 from characters_classes.deafult_object import GameObject
 from tools.utils import side_collide
 from interface.health import HpInterface
@@ -12,7 +12,7 @@ from object_classes.heal import HealObject
 class character(GameObject):
     def __init__(self, hp=100, ammo=100, x=600, y=800, size=40, speed=10,
                  img=normpath('resources/images/character/Bob.png'), Worker=None,
-                 weapon=AutomaticGun):
+                 weapon=Shotgun):
         # pygame.sprite.Sprite.__init__(self)
         self.hp = hp
         self.ammo = ammo
