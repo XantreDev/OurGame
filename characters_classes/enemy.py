@@ -16,9 +16,13 @@ class Enemy(character):
         self.timer = 0
         self.path = []
         self.destination_point = None
+        self.moving = False
 
     def run(self, objects):
         if not Route(self.rect.center, self.player.rect.center).roadblocks(objects):
+            self.moving = False
+            self.shift_x = 0
+            self.shift_y = 0
             self.weapon.activate()
         else:
             x, y = self.player.rect.center
@@ -43,33 +47,38 @@ class Enemy(character):
         self.move(self.shift_x, self.shift_y)
 
     def go_on_path(self):
-        x, y = self.rect.x, self.rect.y
-        
-        i = 0
+        x, y = self.rect.centerx, self.rect.centery
         
         passed = -1
         
+        
         for i in range(len(self.path)):
-            if more_accurate_comprasion((y, x),(self.path[i][0] * settings.precision, self.path[i][1]*settings.precision)):
+            if more_accurate_comprasion((y, x), (self.path[i][0] * settings.precision, self.path[i][1]*settings.precision)):
                 passed = i + 1
         
         
-        if passed != -1:
+        if passed != -1 or self.moving==False:
+            # print("before: " ,self.path)
+            self.moving = True
             self.path = self.path[passed:]
         
             if not self.path: return
                    
-            target_y, target_x = self.path[0][1] * settings.precision, self.path[0][0] * settings.precision
+            # print("after: " ,self.path)
+            
+            target_y, target_x = self.path[0][0] * settings.precision, self.path[0][1] * settings.precision
+
+            x//= settings.precision
+            x*= settings.precision
+            
+            y//= settings.precision
+            y*= settings.precision
 
             vector = Vector((target_x - x), (target_y - y))
             
-            # if abs(vector.x) + abs(vector.y) == 0:
-            #     k = 0
-            # else:
-            #     k = self.speed ** 2 / (vector.x ** 2 + vector.y ** 2)
-            # k *= 2
+            # print(vector.x, vector.y)
             
-            k = 0.1
+            k = 0.02
             
             self.shift_x = vector.x * k
             self.shift_y = vector.y * k
